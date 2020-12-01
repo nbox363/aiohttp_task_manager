@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="container col-md-9 alert alert-primary">
+    <h1>
+        {{ task.title }}
+    </h1>
+    <h4>
+        {{ task.body }}
+    </h4>
+    <h6>
+        {{ task.finish }}
+    </h6>
+    {% if g.user['id'] == task['author_id'] %}
+    <a href="{{ url_for('task.update', id=task['id']) }}" class="btn btn-outline-warning btn-sm">
+        Update
+    </a>
+    <a href="{{ url_for('task.delete', id=task['id']) }}" class="btn btn-outline-danger btn-sm">
+        Done
+    </a>
+    {% endif %}
+    <hr>
+    <h6>
+        <a class="navbar-brand" href="{{ url_for('task.index') }}">
+            Back
+        </a>
+    </h6>
+</div>
+
+{% endblock content %}
