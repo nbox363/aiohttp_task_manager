@@ -1,28 +1,46 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<h1>{% block title %}Posts{% endblock %}</h1>
-{% if g.user %}
-<a class="action" href="{{ url_for('task.create') }}">New</a>
-{% endif %}
-{% endblock %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-{% for task in tasks %}
-<article class="task">
-    <header>
-        <div>
-            <h1>{{ task['title'] }}</h1>
-            <div class="about">by {{ task['username'] }} on {{ task['created'].strftime('%Y-%m-%d') }}</div>
-        </div>
-        {% if g.user['id'] == task['author_id'] %}
-        <a class="action" href="{{ url_for('task.update', id=task['id']) }}">Edit</a>
-        {% endif %}
-    </header>
-    <p class="body">{{ task['body'] }}</p>
-</article>
-{% if not loop.last %}
+<div>
+    <h1>
+        All Your Tasks Here
+    </h1>
+    <a href="{{ url_for('task.create') }}" class="btn btn-primary btn-sm">
+        Add New Task
+    </a>
+</div>
 <hr>
-{% endif %}
-{% endfor %}
-{% endblock %}
+
+<div class="row">
+    {% for task in tasks %}
+    <div class="container col-md-5 alert alert-warning">
+        <h3 class="text-dark">
+            <a class="navbar-brand" href="{{ url_for('task.task_detail', id=task['id']) }}">
+                {{ task.title }}
+            </a>
+        </h3>
+        <h4>
+            {{ task.body }}
+        </h4>
+        <br>
+        <h6>
+            {{task.finish }}
+        </h6>
+        <div>
+            {% if g.user['id'] == task['author_id'] %}
+            <a href="{{ url_for('task.update', id=task['id']) }}" class="btn btn-outline-warning btn-sm">
+                Update
+            </a>
+            <a href="{{ url_for('task.delete', id=task['id']) }}" class="btn btn-outline-danger btn-sm">
+                Done
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock content %}
