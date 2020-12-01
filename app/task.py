@@ -78,6 +78,7 @@ def update(id):
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        finish = request.form['finish']
         error = None
 
         if not title:
@@ -88,9 +89,8 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE task SET title = ?, body = ?'
-                ' WHERE id = ?',
-                (title, body, id)
+                'UPDATE task SET title = ?, body = ?, finish = ? WHERE id = ?',
+                (title, body, finish, id)
             )
             db.commit()
             return redirect(url_for('task.index'))
