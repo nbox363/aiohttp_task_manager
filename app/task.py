@@ -11,7 +11,7 @@ bp = Blueprint('task', __name__)
 
 def get_task(id, check_author=True):
     task = get_db().execute(
-        'SELECT p.id, title, body, finish, author_id, email'
+        'SELECT p.id, title, body, finish, author_id, email, is_done'
         ' FROM task p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)
@@ -36,7 +36,7 @@ def task_detail(id):
 def index():
     db = get_db()
     tasks = db.execute(
-        'SELECT p.id, title, body, finish, author_id, email'
+        'SELECT p.id, title, body, finish, author_id, email, is_done'
         ' FROM task p JOIN user u ON p.author_id = u.id'
         ' ORDER BY finish DESC'
     ).fetchall()
@@ -104,5 +104,17 @@ def delete(id):
     get_task(id)
     db = get_db()
     db.execute('DELETE FROM task WHERE id = ?', (id,))
+    db.commit()
+    return redirect(url_for('task.index'))
+
+
+@bp.route('/<int:id>/done', methods=('POST', 'GET'))
+def done(id):
+    get_task(id)
+    db = get_db()
+    db.execute(
+        'UPDATE task SET is_done = ? WHERE id = ?',
+        (1, id)
+    )
     db.commit()
     return redirect(url_for('task.index'))

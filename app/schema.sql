@@ -11,5 +11,6 @@ CREATE TABLE task (
   finish INTEGER NOT NULL,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
+  is_done INTEGER NOT NULL DEFAULT 0,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );

@@ -15,13 +15,17 @@
     <h6>
         {{ task.finish }}
     </h6>
+    {% if task['is_done'] == 1 %}
+    <h4>Done!</h4>
+    {% else %}
     {% if g.user['id'] == task['author_id'] %}
     <a href="{{ url_for('task.update', id=task['id']) }}" class="btn btn-outline-warning btn-sm">
         Update
     </a>
-    <a href="{{ url_for('task.delete', id=task['id']) }}" class="btn btn-outline-danger btn-sm">
+    <a href="{{ url_for('task.done', id=task['id']) }}" class="btn btn-outline-danger btn-sm">
         Done
     </a>
+    {% endif %}
     {% endif %}
     <hr>
     <h6>
@@ -30,5 +34,4 @@
         </a>
     </h6>
 </div>
-
 {% endblock content %}
